@@ -1,0 +1,103 @@
+## Nexus AI ( Python Assistant )
+
+Desktop AI Chatbot Application សម្រាប់បង្រៀន និងកែកូដ Python សាងសង់ដោយ **PyQt5** ។ App នេះដំណើរការជា **Rule - based AI** ១០០% ក្នុងម៉ាស៊ីន Local និង គ្មានការហៅ API ខាងក្រៅ ឬប្រើ Internet ទេ។
+
+---
+
+## ✨ លក្ខណៈពិសេស ( Features )
+
+- 📚 **Lesson Mode** : សួរសំណួរ ឬជ្រើសរើស Topic ពី Sidebar ដើម្បីរៀន Python ( 11 ប្រធានបទ )
+- 🛠 **Fix Code Mode** : Paste កូដ Python ចូល App នឹងវិភាគ រកកំហុស និងកែឱ្យស្វ័យប្រវត្តិ
+- 🎨 UI រចនាបែប Dark Theme ស្រដៀង Chat App សម័យទំនើប
+- ⚡ ដំណើរការលឿន ព្រោះគ្មាន API call ខាងក្រៅ
+
+---
+
+## 📁 រចនាសម្ព័ន្ធគម្រោង ( Project Structure )
+
+```
+Demo-AIAssistant/
+├── FixCode/
+│   └── fix_code_engine.py          # Logic កែកូដ ( regex + AST )
+├── LessonCodePython/
+│   ├── lesson_engine.py            # Logic ផ្គូផ្គង keyword → topic
+│   ├── lessons.json                # ខ្លឹមសារមេរៀនទាំង 11
+│   └── theme.py                    # ពណ៌ និង Font កំណត់រួម
+├── ui/
+│   ├── main_window.py              # បង្អួចមេ
+│   ├── sidebar.py                  # ម៉ឺនុយឆ្វេង
+│   ├── chat_panel.py               # ផ្ទាំង Chat
+│   ├── message_bubble.py           # Bubble សារ
+│   ├── input_bar.py                # ប្រអប់វាយអក្សរ
+│   └── avatars.py                  # រូបតំណាង
+├── main.py                         # ចំណុចចូល ( Entry point )
+└── requirements.txt                # Dependencies
+```
+
+---
+
+## 🚀 ការដំឡើង និងដំណើរការ ( Installation & Run )
+
+### តម្រូវការ ( Requirements )
+- Python 3.9+
+- PyQt5 >= 5.15
+
+### ជំហាន
+
+```bash
+# 1. ដំឡើង dependencies
+pip install -r requirements.txt
+
+# 2. ដំណើរការ App
+python main.py
+```
+
+---
+
+## 📚 Lesson Mode : ប្រធានបទដែលមាន ( Topics )
+
+| Key                   | ពិពណ៌នា                                           |
+|-----------------------|---------------------------------------------------|
+| `basic`               | ចំណេះដឹងមូលដ្ឋាន Python, comment, syntax           |
+| `variables`           | Variables & Data Types                            |
+| `operators`           | Arithmetic / Bitwise Operators                    |
+| `conditional`         | if / elif / else                                  |
+| `loop`                | for / while, break, continue                      |
+| `array`               | List: append, pop, sort, slice                    |
+| `function`            | def, return, parameters                           |
+| `data_structures`     | tuple, set, dictionary                            |
+| `functions_advanced`  | *args, **kwargs, lambda                           |
+| `file_handling`       | open(), read/write file                           |
+| `oop`                 | class, object, inheritance, `__init__`            |
+
+**របៀបប្រើ:** វាយឈ្មោះ topic ដោយផ្ទាល់ ឬពាក្យគន្លឹះពាក់ព័ន្ធ ក្នុង chat box, ឬវាយ `/start` ដើម្បីមើល menu ពេញ។
+
+---
+
+## 🛠 Fix Code Mode : អ្វីខ្លះដែលកែបាន
+
+App នឹងស្កេនកូដ Python របស់អ្នក ហើយកែកំហុសទាំងនេះស្វ័យប្រវត្តិ៖
+
+1. **Typo នៃ `print()`** : ដូចជា `printf(`, `Printtf(`, `PrInt(`
+2. **Case ខុស** : `Print()`, `PRINT()` → `print()`
+3. **សញ្ញា `;`** នៅចុងបន្ទាត់ ( មិនចាំបាច់ក្នុង Python )
+4. **Quote / Parenthesis** មិនបានបិទ
+5. **`:` បាត់** ក្រោយ if / elif / else / for / while / def / class
+6. **Logic error** : ប្រើ `=` ជំនួស `==` ក្នុង condition
+7. **Indentation** : លាយ tabs និង spaces, ឬ indent មិនប្រក្រតី
+8. **គណនា Output** : ប៉ាន់ស្មានលទ្ធផលពី `print()` ដោយប្រើ Python AST
+
+**របៀបប្រើ:** Paste កូដ Python ចូល input bar រួចចុច Send ( Shift+Enter = ចុះបន្ទាត់ថ្មី ) ។
+
+---
+
+## 🎨 Theme
+
+ពណ៌ និង Font ទាំងអស់ត្រូវបានកំណត់នៅកន្លែងតែមួយ (`LessonCodePython/theme.py`) ធ្វើឱ្យងាយស្រួល Customize ទម្រង់ UI ទាំងមូល។
+
+---
+
+## 📝 ចំណាំ ( Notes )
+
+- App នេះមិនតម្រូវឱ្យមាន Internet ឬ API Key ទេ ( 100% Local Logic )
+- សម្រាប់គោលបំណងសិក្សា / Demo : មិនមែនជា AI Model ពិតប្រាកដ (LLM) ទេ គឺជា Rule-based system
