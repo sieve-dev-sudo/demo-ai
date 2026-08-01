@@ -10,29 +10,22 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QPalette, QColor
 
+from LessonCodePython.theme import C
 from ui.main_window import MainWindow
-
-# Base dark palette colors (will move to LessonCodePython/theme.py in a later commit)
-BG_MAIN    = "#0f1115"
-BG_INPUT   = "#181b21"
-BG_CARD    = "#1c1f26"
-TEXT       = "#e6e6e6"
-TEXT_MUTED = "#8a8f98"
-ACCENT     = "#5865f2"
 
 
 def build_dark_palette() -> QPalette:
     pal = QPalette()
-    pal.setColor(QPalette.Window,          QColor(BG_MAIN))
-    pal.setColor(QPalette.WindowText,      QColor(TEXT))
-    pal.setColor(QPalette.Base,            QColor(BG_INPUT))
-    pal.setColor(QPalette.AlternateBase,   QColor(BG_CARD))
-    pal.setColor(QPalette.Text,            QColor(TEXT))
-    pal.setColor(QPalette.ButtonText,      QColor(TEXT))
-    pal.setColor(QPalette.Button,          QColor(BG_CARD))
-    pal.setColor(QPalette.Highlight,       QColor(ACCENT))
+    pal.setColor(QPalette.Window,          QColor(C["bg_main"]))
+    pal.setColor(QPalette.WindowText,      QColor(C["text_primary"]))
+    pal.setColor(QPalette.Base,            QColor(C["bg_input"]))
+    pal.setColor(QPalette.AlternateBase,   QColor(C["bg_card"]))
+    pal.setColor(QPalette.Text,            QColor(C["text_primary"]))
+    pal.setColor(QPalette.ButtonText,      QColor(C["text_primary"]))
+    pal.setColor(QPalette.Button,          QColor(C["bg_card"]))
+    pal.setColor(QPalette.Highlight,       QColor(C["accent"]))
     pal.setColor(QPalette.HighlightedText, QColor("#ffffff"))
-    pal.setColor(QPalette.PlaceholderText, QColor(TEXT_MUTED))
+    pal.setColor(QPalette.PlaceholderText, QColor(C["text_muted"]))
     return pal
 
 
