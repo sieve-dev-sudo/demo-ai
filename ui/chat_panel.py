@@ -1,0 +1,124 @@
+"""
+ui/chat_panel.py
+──────────────────
+Scrollable message list + input bar for one mode (Lesson or Fix Code).
+Each panel has its own engine instance and independent chat history.
+Engine runs in a background QThread so the UI never freezes.
+"""
+
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
+from PyQt5.QtCore import Qt, QThread, pyqtSignal, QObject
+
+from LessonCodePython.theme import C
+from ui.message_bubble import MessageBubble
+from ui.input_bar import InputBar
+
+
+class _Worker(QObject):
+    finished = pyqtSignal(str)
+
+    def __init__(self, engine, text: str):
+        super().__init__()
+        self._engine = engine
+        self._text   = text
+
+    def run(self):
+        self.finished.emit(self._engine.get_response(self._text))
+
+
+class ChatPanel(QWidget):
+    def __init__(self, engine, welcome_text: str = "", parent=None):
+        super().__init__(parent)
+        self._engine         = engine
+        self._typing_bubble  = None
+        self._thread         = None
+        self._worker         = None
+        self._build()
+        if welcome_text:
+            self._add_ai_bubble(welcome_text)
+
+    # ── build ────────────────────────────────────────────────────────────
+    def _build(self):
+        lay = QVBoxLayout(self)
+        lay.setContentsMargins(0, 0, 0, 0)
+        lay.setSpacing(0)
+
+        # Scroll area
+        self._scroll = QScrollArea()
+        self._scroll.setWidgetResizable(True)
+        self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self._scroll.setStyleSheet(
+            f"QScrollArea {{ background:{C['bg_main']}; border:none; }}"
+            f"QScrollBar:vertical {{ background:{C['bg_card']}; width:6px; border:none; }}"
+            f"QScrollBar::handle:vertical {{ background:{C['border']}; border-radius:3px; }}"
+        )
+
+        self._container = QWidget()
+        self._container.setStyleSheet(f"background:{C['bg_main']};")
+        self._msg_lay = QVBoxLayout(self._container)
+        self._msg_lay.setContentsMargins(16, 16, 16, 16)
+        self._msg_lay.setSpacing(4)
+        self._msg_lay.addStretch()   # pushes messages to top
+
+        self._scroll.setWidget(self._container)
+
+        # Input bar
+        self._bar = InputBar()
+        self._bar.submitted.connect(self._on_send)
+
+        lay.addWidget(self._scroll)
+        lay.addWidget(self._bar)
+
+    # ── public ───────────────────────────────────────────────────────────
+    def set_placeholder(self, text: str):
+        self._bar.set_placeholder(text)
+
+    def inject_text(self, text: str):
+        """Pre-fill + auto-send (used by sidebar topic shortcuts)."""
+        self._on_send(text)
+
+    # ── private ──────────────────────────────────────────────────────────
+    def _on_send(self, text: str):
+        self._add_user_bubble(text)
+        self._bar.set_enabled(False)
+        self._show_typing()
+
+        self._thread = QThread()
+        self._worker = _Worker(self._engine, text)
+        self._worker.moveToThread(self._thread)
+        self._thread.started.connect(self._worker.run)
+        self._worker.finished.connect(self._on_response)
+        self._worker.finished.connect(self._thread.quit)
+        self._thread.start()
+
+    def _on_response(self, text: str):
+        self._remove_typing()
+        self._add_ai_bubble(text)
+        self._bar.set_enabled(True)
+        self._bar.focus()
+
+    def _add_user_bubble(self, text: str):
+        b = MessageBubble(text, role="user")
+        self._msg_lay.insertWidget(self._msg_lay.count() - 1, b)
+        self._bottom()
+
+    def _add_ai_bubble(self, text: str):
+        b = MessageBubble(text, role="ai")
+        self._msg_lay.insertWidget(self._msg_lay.count() - 1, b)
+        self._bottom()
+
+    def _show_typing(self):
+        self._typing_bubble = MessageBubble(role="ai", is_typing=True)
+        self._msg_lay.insertWidget(self._msg_lay.count() - 1, self._typing_bubble)
+        self._bottom()
+
+    def _remove_typing(self):
+        if self._typing_bubble:
+            self._typing_bubble.stop_typing()
+            self._msg_lay.removeWidget(self._typing_bubble)
+            self._typing_bubble.deleteLater()
+            self._typing_bubble = None
+
+    def _bottom(self):
+        bar = self._scroll.verticalScrollBar()
+        bar.setValue(bar.maximum())

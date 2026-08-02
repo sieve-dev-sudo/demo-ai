@@ -1,0 +1,153 @@
+"""
+ui/sidebar.py
+"""
+from PyQt5.QtWidgets import (
+    QWidget, QVBoxLayout, QLabel, QPushButton,
+    QFrame, QSizePolicy, QScrollArea
+)
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QFontMetrics, QFont
+
+from LessonCodePython.theme import C, F
+
+TOPICS = [
+    ("basic",              "🔰 Basic"),
+    ("variables",          "📦 Variable && Data Types"),
+    ("operators",          "🔢 Operators"),
+    ("conditional",        "🔀 Conditional"),
+    ("loop",               "🔁 Loop"),
+    ("array",              "📋 Array"),
+    ("function",           "⚙️ Function"),
+    ("data_structures",    "🗂 Data Structures"),
+    ("functions_advanced", "🔧 Functions Advanced"),
+    ("file_handling",      "📁 File Handling"),
+    ("oop",                "🏛 OOP"),
+]
+
+def _sidebar_width() -> int:
+    font   = QFont("Segoe UI", F["topic"])
+    fm     = QFontMetrics(font)
+    widest = max(fm.horizontalAdvance(label) for _, label in TOPICS)
+    return max(widest + 22 + 12 + 12 + 20, 340)
+
+
+class Sidebar(QWidget):
+    mode_changed   = pyqtSignal(str)
+    topic_selected = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFixedWidth(_sidebar_width())
+        self.setStyleSheet(f"background:{C['bg_sidebar']};")
+        self._build()
+
+    def _build(self):
+        root = QVBoxLayout(self)
+        root.setContentsMargins(10, 14, 10, 14)
+        root.setSpacing(4)
+
+        # Title
+        title = QLabel("🐍  Nexus AI")
+        title.setStyleSheet(
+            f"color:{C['python_yellow']}; font-size:{F['title']}pt; "
+            f"font-weight:700; padding:4px 8px 8px;"
+        )
+        root.addWidget(title)
+        root.addWidget(self._hr())
+
+        # Mode buttons
+        root.addWidget(self._section_lbl("MODE"))
+        self._btn_lesson = self._mk_btn("📚  Lesson",   "lesson")
+        self._btn_fix    = self._mk_btn("🛠  Fix Code", "fix")
+        root.addWidget(self._btn_lesson)
+        root.addWidget(self._btn_fix)
+        self._activate("lesson")
+        root.addWidget(self._hr())
+
+        # Topic container — tight, no extra spacing
+        self._topic_outer = QWidget()
+        self._topic_outer.setStyleSheet("background:transparent;")
+        to_lay = QVBoxLayout(self._topic_outer)
+        to_lay.setContentsMargins(0, 0, 0, 0)
+        to_lay.setSpacing(0)
+        to_lay.addWidget(self._section_lbl("TOPICS"))
+
+        for key, label in TOPICS:
+            b = QPushButton(label)
+            b.setCursor(Qt.PointingHandCursor)
+            b.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            b.setStyleSheet(self._topic_style())
+            b.clicked.connect(lambda _, k=key: self.topic_selected.emit(k))
+            to_lay.addWidget(b)
+
+        to_lay.addStretch(0)
+
+        scroll = QScrollArea()
+        scroll.setWidget(self._topic_outer)
+        scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll.setStyleSheet(
+            "QScrollArea { border:none; background:transparent; }"
+            f"QScrollBar:vertical {{ background:transparent; width:4px; }}"
+            f"QScrollBar::handle:vertical {{ background:{C['border']}; border-radius:2px; min-height:20px; }}"
+            f"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height:0; }}"
+        )
+        root.addWidget(scroll, stretch=1)
+
+    def _mk_btn(self, label, mode):
+        btn = QPushButton(label)
+        btn.setCursor(Qt.PointingHandCursor)
+        btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        btn.setStyleSheet(self._inactive_style())
+        btn.clicked.connect(lambda: self._on_mode(mode))
+        return btn
+
+    def _on_mode(self, mode):
+        self._activate(mode)
+        self.mode_changed.emit(mode)
+
+    def _activate(self, mode):
+        active = (
+            f"QPushButton {{ background:{C['accent']}; color:#fff; "
+            f"border:none; text-align:left; padding:9px 14px; "
+            f"border-radius:8px; font-size:{F['sidebar']}pt; font-weight:600; }}"
+        )
+        self._btn_lesson.setStyleSheet(active if mode=="lesson" else self._inactive_style())
+        self._btn_fix   .setStyleSheet(active if mode=="fix"    else self._inactive_style())
+        if hasattr(self, "_topic_outer"):
+            self._topic_outer.setVisible(mode == "lesson")
+
+    @staticmethod
+    def _inactive_style():
+        return (
+            f"QPushButton {{ background:transparent; color:{C['text_secondary']}; "
+            f"border:none; text-align:left; padding:9px 14px; "
+            f"border-radius:8px; font-size:{F['sidebar']}pt; }}"
+            f"QPushButton:hover {{ background:{C['bg_hover']}; color:{C['text_primary']}; }}"
+        )
+
+    @staticmethod
+    def _topic_style():
+        return (
+            f"QPushButton {{ background:transparent; color:{C['text_secondary']}; "
+            f"border:none; text-align:left; padding:7px 12px; "
+            f"border-radius:6px; font-size:{F['topic']}pt; white-space:nowrap; }}"
+            f"QPushButton:hover {{ background:{C['bg_hover']}; color:{C['text_primary']}; }}"
+        )
+
+    @staticmethod
+    def _section_lbl(text):
+        lbl = QLabel(text)
+        lbl.setStyleSheet(
+            f"color:{C['text_muted']}; font-size:{F['label']}pt; "
+            f"font-weight:600; padding:8px 8px 4px; letter-spacing:1px;"
+        )
+        return lbl
+
+    @staticmethod
+    def _hr():
+        f = QFrame()
+        f.setFrameShape(QFrame.HLine)
+        f.setStyleSheet(f"background:{C['border']}; max-height:1px; margin:4px 0;")
+        return f
