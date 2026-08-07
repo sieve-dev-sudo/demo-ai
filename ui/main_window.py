@@ -12,7 +12,7 @@ from ui.chat_panel import ChatPanel
 
 LESSON_WELCOME = (
     "🐍 សូមស្វាគមន៍មកកាន់ Python AI Assistant!\n"
-    "📚 Lesson Mode — វាយឈ្មោះ Topic ឬជ្រើសពី Sidebar\n"
+    "📚 Lesson Mode : វាយឈ្មោះ Topic ឬជ្រើសពី Sidebar\n"
     "👉 វាយ /start ដើម្បីមើល README ពេញ"
 )
 
