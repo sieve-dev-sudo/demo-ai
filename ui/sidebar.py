@@ -11,28 +11,29 @@ from PyQt5.QtGui import QFontMetrics, QFont
 from LessonCodePython.theme import C, F
 
 TOPICS = [
-    ("basic",              "🔰 Basic"),
-    ("variables",          "📦 Variable && Data Types"),
-    ("operators",          "🔢 Operators"),
-    ("conditional",        "🔀 Conditional"),
-    ("loop",               "🔁 Loop"),
-    ("array",              "📋 Array"),
-    ("function",           "⚙️ Function"),
-    ("data_structures",    "🗂 Data Structures"),
+    ("basic", "🔰 Basic"),
+    ("variables", "📦 Variable && Data Types"),
+    ("operators", "🔢 Operators"),
+    ("conditional", "🔀 Conditional"),
+    ("loop", "🔁 Loop"),
+    ("array", "📋 Array"),
+    ("function", "⚙️ Function"),
+    ("data_structures", "🗂 Data Structures"),
     ("functions_advanced", "🔧 Functions Advanced"),
-    ("file_handling",      "📁 File Handling"),
-    ("oop",                "🏛 OOP"),
+    ("file_handling", "📁 File Handling"),
+    ("oop", "🏛 OOP"),
 ]
 
+
 def _sidebar_width() -> int:
-    font   = QFont("Segoe UI", F["topic"])
-    fm     = QFontMetrics(font)
+    font = QFont("Segoe UI", F["topic"])
+    fm = QFontMetrics(font)
     widest = max(fm.horizontalAdvance(label) for _, label in TOPICS)
     return max(widest + 22 + 12 + 12 + 20, 340)
 
 
 class Sidebar(QWidget):
-    mode_changed   = pyqtSignal(str)
+    mode_changed = pyqtSignal(str)
     topic_selected = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -57,8 +58,8 @@ class Sidebar(QWidget):
 
         # Mode buttons
         root.addWidget(self._section_lbl("MODE"))
-        self._btn_lesson = self._mk_btn("📚  Lesson",   "lesson")
-        self._btn_fix    = self._mk_btn("🛠  Fix Code", "fix")
+        self._btn_lesson = self._mk_btn("📚  Lesson", "lesson")
+        self._btn_fix = self._mk_btn("🛠  Fix Code", "fix")
         root.addWidget(self._btn_lesson)
         root.addWidget(self._btn_fix)
         self._activate("lesson")
@@ -113,8 +114,8 @@ class Sidebar(QWidget):
             f"border:none; text-align:left; padding:9px 14px; "
             f"border-radius:8px; font-size:{F['sidebar']}pt; font-weight:600; }}"
         )
-        self._btn_lesson.setStyleSheet(active if mode=="lesson" else self._inactive_style())
-        self._btn_fix   .setStyleSheet(active if mode=="fix"    else self._inactive_style())
+        self._btn_lesson.setStyleSheet(active if mode == "lesson" else self._inactive_style())
+        self._btn_fix   .setStyleSheet(active if mode == "fix" else self._inactive_style())
         if hasattr(self, "_topic_outer"):
             self._topic_outer.setVisible(mode == "lesson")
 

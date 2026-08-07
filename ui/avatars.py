@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QLabel, QWidget
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtCore import Qt, QTimer
 
-from LessonCodePython.theme import C, F
+from LessonCodePython.theme import C
 
 
 class AvatarLabel(QLabel):
@@ -22,19 +22,19 @@ class AvatarLabel(QLabel):
 
 class TypingDots(QWidget):
     DOT_COLORS = [C["dot_1"], C["dot_2"], C["dot_3"]]
-    DOT_SIZE   = 9
+    DOT_SIZE = 9
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._offsets = [0, 0, 0]
-        self._timer   = QTimer(self)
+        self._timer = QTimer(self)
         self._timer.timeout.connect(self._tick)
-        self._step    = 0
+        self._step = 0
         self.setFixedHeight(28)
         self.setMinimumWidth(54)
 
-    def start(self):  self._timer.start(120)
-    def stop(self):   self._timer.stop()
+    def start(self): self._timer.start(120)
+    def stop(self): self._timer.stop()
 
     def _tick(self):
         self._step = (self._step + 1) % 9

@@ -20,7 +20,7 @@ class _Worker(QObject):
     def __init__(self, engine, text: str):
         super().__init__()
         self._engine = engine
-        self._text   = text
+        self._text = text
 
     def run(self):
         self.finished.emit(self._engine.get_response(self._text))
@@ -29,10 +29,10 @@ class _Worker(QObject):
 class ChatPanel(QWidget):
     def __init__(self, engine, welcome_text: str = "", parent=None):
         super().__init__(parent)
-        self._engine         = engine
-        self._typing_bubble  = None
-        self._thread         = None
-        self._worker         = None
+        self._engine = engine
+        self._typing_bubble = None
+        self._thread = None
+        self._worker = None
         self._build()
         if welcome_text:
             self._add_ai_bubble(welcome_text)

@@ -22,7 +22,7 @@ class CodeBlock(QTextEdit):
     sizeHint() is also overridden so Qt layout honours it correctly.
     """
     H_LINE_EXTRA = 4    # leading between lines
-    V_PAD        = 32   # top+bottom padding inside the box
+    V_PAD = 32   # top+bottom padding inside the box
 
     def __init__(self, code: str, parent=None):
         super().__init__(parent)
@@ -48,11 +48,11 @@ class CodeBlock(QTextEdit):
         self.setFixedHeight(self._target_h)
 
     def _calc_height(self, code: str) -> int:
-        fm     = QFontMetrics(self._font)
+        fm = QFontMetrics(self._font)
         line_h = fm.height() + self.H_LINE_EXTRA
-        lines  = code.split("\n")
-        n      = max(len(lines), 1)
-        h      = line_h * n + self.V_PAD
+        lines = code.split("\n")
+        n = max(len(lines), 1)
+        h = line_h * n + self.V_PAD
         return max(min(h, 640), 40)
 
     def sizeHint(self) -> QSize:
@@ -66,7 +66,7 @@ class MessageBubble(QWidget):
     def __init__(self, text: str = "", role: str = "ai",
                  is_typing: bool = False, parent=None):
         super().__init__(parent)
-        self.role  = role
+        self.role = role
         self._dots = None
         self._setup(text, is_typing)
 
@@ -126,7 +126,7 @@ class MessageBubble(QWidget):
                 lbl.setWordWrap(True)
                 lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
                 bg = C["bg_user_bubble"] if self.role == "user" else C["bg_ai_bubble"]
-                fg = "#ffffff"            if self.role == "user" else C["text_primary"]
+                fg = "#ffffff" if self.role == "user" else C["text_primary"]
                 lbl.setStyleSheet(
                     f"background:{bg}; color:{fg}; "
                     f"border-radius:12px; padding:12px 16px; "

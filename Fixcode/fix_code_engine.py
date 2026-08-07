@@ -27,21 +27,22 @@ INSTRUCTIONS = (
 
 # ── known Python builtins / keywords that start calls (never replace these)
 _KNOWN_CALLS = {
-    "print","input","int","float","str","bool","list","tuple","set","dict",
-    "len","range","type","isinstance","hasattr","getattr","setattr","open",
-    "enumerate","zip","map","filter","sorted","reversed","sum","min","max",
-    "abs","round","pow","hex","oct","bin","chr","ord","repr","id","hash",
-    "all","any","iter","next","vars","dir","help","exit","quit",
-    "if","for","while","def","class","return","import","from","with","try",
-    "except","finally","raise","pass","break","continue","lambda","yield",
-    "and","or","not","in","is","True","False","None","super","self",
-    "append","insert","remove","pop","sort","clear","extend","update",
-    "format","join","split","strip","replace","find","upper","lower",
+    "print", "input", "int", "float", "str", "bool", "list", "tuple", "set", "dict",
+    "len", "range", "type", "isinstance", "hasattr", "getattr", "setattr", "open",
+    "enumerate", "zip", "map", "filter", "sorted", "reversed", "sum", "min", "max",
+    "abs", "round", "pow", "hex", "oct", "bin", "chr", "ord", "repr", "id", "hash",
+    "all", "any", "iter", "next", "vars", "dir", "help", "exit", "quit",
+    "if", "for", "while", "def", "class", "return", "import", "from", "with", "try",
+    "except", "finally", "raise", "pass", "break", "continue", "lambda", "yield",
+    "and", "or", "not", "in", "is", "True", "False", "None", "super", "self",
+    "append", "insert", "remove", "pop", "sort", "clear", "extend", "update",
+    "format", "join", "split", "strip", "replace", "find", "upper", "lower",
 }
 
 # ── similarity: does a token "look like" a print typo?
 #   Strategy: token must share ≥3 of the 5 chars p-r-i-n-t (in order)
 _PRINT_CHARS = list("print")
+
 
 def _print_similarity(word: str) -> bool:
     """Return True if word is a plausible typo of 'print'."""
@@ -61,6 +62,7 @@ def _print_similarity(word: str) -> bool:
         return False
     return True
 
+
 # Matches any identifier immediately followed by (
 _CALL_RE = re.compile(r'\b([A-Za-z_][A-Za-z0-9_]*)\s*\(')
 
@@ -68,16 +70,16 @@ _CALL_RE = re.compile(r'\b([A-Za-z_][A-Za-z0-9_]*)\s*\(')
 def _fix_print_typos(code: str):
     """R0: replace print-like typos (printf, Printtf, prinTfff …) with print."""
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     result = []
     for lineno, line in enumerate(lines, 1):
         def _repl(m):
             word = m.group(1)
             if _print_similarity(word):
                 issues.append((lineno,
-                    f"'{word}(...)' មិនមែន Python function : "
-                    f"ប្រហែលជា typo នៃ print()",
-                    f"{word}(  →  print("))
+                               f"'{word}(...)' មិនមែន Python function : "
+                               f"ប្រហែលជា typo នៃ print()",
+                               f"{word}(  →  print("))
                 return "print("
             return m.group(0)
         new_line = _CALL_RE.sub(_repl, line)
@@ -88,17 +90,18 @@ def _fix_print_typos(code: str):
 # ── R1: remaining case variants of print (Print, PRINT, PrInT …)
 _PRINT_CASE_RE = re.compile(r'\b(print)\s*\(', re.IGNORECASE)
 
+
 def _fix_print_case(code: str):
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     result = []
     for lineno, line in enumerate(lines, 1):
         def _repl(m):
             word = m.group(1)
             if word != "print":
                 issues.append((lineno,
-                    f"'{word}' ខុស case → ត្រូវជា 'print' (Python case-sensitive)",
-                    f"{word}(  →  print("))
+                               f"'{word}' ខុស case → ត្រូវជា 'print' (Python case-sensitive)",
+                               f"{word}(  →  print("))
             return "print("
         new_line = _PRINT_CASE_RE.sub(_repl, line)
         result.append(new_line)
@@ -108,17 +111,18 @@ def _fix_print_case(code: str):
 # ── R2: trailing semicolons
 _SEMI_RE = re.compile(r';\s*$')
 
+
 def _fix_semicolons(code: str):
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     result = []
     for lineno, line in enumerate(lines, 1):
         s = line.rstrip()
         if _SEMI_RE.search(s):
             result.append(_SEMI_RE.sub("", s))
             issues.append((lineno,
-                "';' នៅចុងបន្ទាត់ : Python មិនប្រើ ';' ដើម្បីបញ្ចប់ statement",
-                "លុប ';' ចេញ"))
+                           "';' នៅចុងបន្ទាត់ : Python មិនប្រើ ';' ដើម្បីបញ្ចប់ statement",
+                           "លុប ';' ចេញ"))
         else:
             result.append(line)
     return "\n".join(result), issues
@@ -127,7 +131,7 @@ def _fix_semicolons(code: str):
 # ── R3: unclosed quotes / parens
 def _fix_quotes_parens(code: str):
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     result = []
     for lineno, line in enumerate(lines, 1):
         fixed_line, li = _fix_line(line, lineno)
@@ -135,23 +139,27 @@ def _fix_quotes_parens(code: str):
         result.append(fixed_line)
     return "\n".join(result), issues
 
+
 def _fix_line(line: str, lineno: int):
-    issues  = []
-    in_str  = False
-    q_char  = None
-    depth   = 0
-    i       = 0
-    chars   = list(line)
+    issues = []
+    in_str = False
+    q_char = None
+    depth = 0
+    i = 0
+    chars = list(line)
     while i < len(chars):
         c = chars[i]
         if in_str:
             if c == "\\":
-                i += 2; continue
+                i += 2
+                continue
             if c == q_char:
-                in_str = False; q_char = None
+                in_str = False
+                q_char = None
         else:
             if c in ('"', "'"):
-                in_str = True; q_char = c
+                in_str = True
+                q_char = c
             elif c == "(":
                 depth += 1
             elif c == ")":
@@ -161,13 +169,13 @@ def _fix_line(line: str, lineno: int):
     if in_str:
         added.append(q_char)
         issues.append((lineno,
-            f"Quote '{q_char}' មិនបានបិទ string",
-            f"បន្ថែម '{q_char}' នៅចុង"))
+                       f"Quote '{q_char}' មិនបានបិទ string",
+                       f"បន្ថែម '{q_char}' នៅចុង"))
     if depth > 0:
         added.extend([")"] * depth)
         issues.append((lineno,
-            f"'(' {depth} ដងមិនបានបិទ",
-            f"បន្ថែម '{')'*depth}' នៅចុង"))
+                       f"'(' {depth} ដងមិនបានបិទ",
+                       f"បន្ថែម '{')' * depth}' នៅចុង"))
     return line + "".join(added), issues
 
 
@@ -178,7 +186,7 @@ def _fix_line(line: str, lineno: int):
 def _fix_missing_colons(code: str):
     """Detect if/elif/else/for/while/def/class missing colon and add it."""
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     result = []
     control_keywords = ("if ", "elif ", "else", "for ", "while ", "def ", "class ")
     for lineno, line in enumerate(lines, 1):
@@ -192,8 +200,8 @@ def _fix_missing_colons(code: str):
                 result.append(stripped + ":")
                 kw = next((kw for kw in control_keywords if lstr.startswith(kw)), "statement")
                 issues.append((lineno,
-                    f"'{kw.strip()}' statement គ្មាន ':' នៅចុង",
-                    f"បន្ថែម ':' នៅចុងបន្ទាត់"))
+                               f"'{kw.strip()}' statement គ្មាន ':' នៅចុង",
+                               "បន្ថែម ':' នៅចុងបន្ទាត់"))
             else:
                 result.append(line)
         else:
@@ -204,7 +212,7 @@ def _fix_missing_colons(code: str):
 # ── R6: detect common logic errors (assignment in condition)
 def _detect_logic_errors(code: str):
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     for lineno, line in enumerate(lines, 1):
         stripped = line.lstrip()
         if stripped.startswith("if ") or stripped.startswith("while "):
@@ -212,15 +220,15 @@ def _detect_logic_errors(code: str):
             cond_part = line
             if " = " in cond_part and "==" not in cond_part and "!=" not in cond_part:
                 issues.append((lineno,
-                    "អាច assignment (=) ក្នុង condition — ប្រហែលជាចង់ប្រើ '=='",
-                    "ផ្លាស់ប្តូរ '=' ទៅ '==' ប្រសិនជាចង់ប្រៀបធៀប"))
+                               "អាច assignment (=) ក្នុង condition — ប្រហែលជាចង់ប្រើ '=='",
+                               "ផ្លាស់ប្តូរ '=' ទៅ '==' ប្រសិនជាចង់ប្រៀបធៀប"))
     return issues
 
 
 # ── R7: detect indentation issues (mixed tabs/spaces or inconsistent indent)
 def _detect_indentation_issues(code: str):
     issues = []
-    lines  = code.splitlines()
+    lines = code.splitlines()
     indent_types = set()
     indent_levels = []
     for lineno, line in enumerate(lines, 1):
@@ -236,17 +244,18 @@ def _detect_indentation_issues(code: str):
         indent_levels.append(count)
     if len(indent_types) > 1:
         issues.append((1,
-            "Mixed tabs and spaces detected : ប្រើ spaces ផ្ទាល់ខ្លួន",
-            "ប្រើ spaces មួយគ្រប់គ្រាន់ (ទូទៅ 4 spaces) និងចៀសវាង tabs"))
+                       "Mixed tabs and spaces detected : ប្រើ spaces ផ្ទាល់ខ្លួន",
+                       "ប្រើ spaces មួយគ្រប់គ្រាន់ (ទូទៅ 4 spaces) និងចៀសវាង tabs"))
     # check for large jumps in indent levels
     prev = 0
     for idx, lvl in enumerate(indent_levels, 1):
         if lvl - prev > 12:
             issues.append((idx,
-                "Indentation jump too large : ប្រហែលមាន indentation មិនត្រឹមត្រូវ",
-                "ពិនិត្យ spacing និង align blocks"))
+                           "Indentation jump too large : ប្រហែលមាន indentation មិនត្រឹមត្រូវ",
+                           "ពិនិត្យ spacing និង align blocks"))
         prev = lvl
     return issues
+
 
 def _compute_output(code: str) -> list:
     output = []
@@ -273,8 +282,10 @@ def _compute_output(code: str) -> list:
         output.append(sep.join(parts))
     return output
 
+
 def _is_print(call):
     return isinstance(call.func, ast.Name) and call.func.id == "print"
+
 
 def _collect_vars(tree, env):
     for node in ast.walk(tree):
@@ -290,17 +301,20 @@ def _collect_vars(tree, env):
                 rval = _eval(node.value, env)
                 if name in env and rval is not None:
                     try:
-                        fn = {ast.Add:operator.add, ast.Sub:operator.sub,
-                              ast.Mult:operator.mul, ast.Div:operator.truediv,
-                              ast.FloorDiv:operator.floordiv,
-                              ast.Mod:operator.mod, ast.Pow:operator.pow
+                        fn = {ast.Add: operator.add, ast.Sub: operator.sub,
+                              ast.Mult: operator.mul, ast.Div: operator.truediv,
+                              ast.FloorDiv: operator.floordiv,
+                              ast.Mod: operator.mod, ast.Pow: operator.pow
                               }.get(type(node.op))
-                        if fn: env[name] = fn(env[name], rval)
-                    except: pass
+                        if fn:
+                            env[name] = fn(env[name], rval)
+                    except BaseException:
+                        pass
 
-_OPS = {ast.Add:operator.add, ast.Sub:operator.sub, ast.Mult:operator.mul,
-        ast.Div:operator.truediv, ast.FloorDiv:operator.floordiv,
-        ast.Mod:operator.mod, ast.Pow:operator.pow}
+
+_OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+        ast.Div: operator.truediv, ast.FloorDiv: operator.floordiv,
+        ast.Mod: operator.mod, ast.Pow: operator.pow}
 _CMP_OPS = {
     ast.Eq: operator.eq,
     ast.NotEq: operator.ne,
@@ -313,17 +327,23 @@ _CMP_OPS = {
     ast.In: lambda a, b: a in b,
     ast.NotIn: lambda a, b: a not in b,
 }
-_UNARY = {ast.UAdd:operator.pos, ast.USub:operator.neg, ast.Not:operator.not_}
+_UNARY = {ast.UAdd: operator.pos, ast.USub: operator.neg, ast.Not: operator.not_}
+
 
 def _eval(node, env):
     try:
-        if isinstance(node, ast.Constant): return node.value
-        if isinstance(node, ast.Num):      return node.n
-        if isinstance(node, ast.Str):      return node.s
-        if isinstance(node, ast.Name):     return env.get(node.id)
+        if isinstance(node, ast.Constant):
+            return node.value
+        if isinstance(node, ast.Num):
+            return node.n
+        if isinstance(node, ast.Str):
+            return node.s
+        if isinstance(node, ast.Name):
+            return env.get(node.id)
         if isinstance(node, ast.BinOp):
             l, r = _eval(node.left, env), _eval(node.right, env)
-            if l is None or r is None: return None
+            if l is None or r is None:
+                return None
             fn = _OPS.get(type(node.op))
             return fn(l, r) if fn else None
         if isinstance(node, ast.BoolOp):
@@ -362,7 +382,8 @@ def _eval(node, env):
                     inner = _eval(v.value, env)
                     parts.append(str(inner) if inner is not None else "?")
             return "".join(parts)
-    except: pass
+    except BaseException:
+        pass
     return None
 
 

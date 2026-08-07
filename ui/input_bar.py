@@ -77,9 +77,9 @@ class _GrowingTextEdit(QTextEdit):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         # Calculate line height from font metrics
-        fm          = QFontMetrics(font)
-        self._lh    = fm.height() + 4          # line height + small gap
-        self._pad   = 22                        # top+bottom padding inside box
+        fm = QFontMetrics(font)
+        self._lh = fm.height() + 4          # line height + small gap
+        self._pad = 22                        # top+bottom padding inside box
         self._min_h = self._lh * self.LINES_MIN + self._pad
         self._max_h = self._lh * self.LINES_MAX + self._pad
 
