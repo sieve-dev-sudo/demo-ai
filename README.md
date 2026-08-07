@@ -1,10 +1,18 @@
-## Nexus AI ( Python Assistant )
+<div align="center">
 
-Desktop AI Chatbot Application សម្រាប់បង្រៀន និងកែកូដ Python សាងសង់ដោយ **PyQt5** ។ App នេះដំណើរការជា **Rule - based AI** ១០០% ក្នុងម៉ាស៊ីន Local និង គ្មានការហៅ API ខាងក្រៅ ឬប្រើ Internet ទេ។
+# Nexus AI : Python Assistant
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PyQt5](https://img.shields.io/badge/PyQt5-41CD52?style=for-the-badge&logo=qt&logoColor=white)
+![Rule-Based](https://img.shields.io/badge/AI-Rule--Based-orange?style=for-the-badge)
+![Topics](https://img.shields.io/badge/TOPICS-11-6f42c1?style=for-the-badge)
+![Offline](https://img.shields.io/badge/Offline-Yes-brightgreen?style=for-the-badge)
+
+</div>
 
 ---
 
-## ✨ លក្ខណៈពិសេស ( Features )
+## ✨ Features
 
 - 📚 **Lesson Mode** : សួរសំណួរ ឬជ្រើសរើស Topic ពី Sidebar ដើម្បីរៀន Python ( 11 ប្រធានបទ )
 - 🛠 **Fix Code Mode** : Paste កូដ Python ចូល App នឹងវិភាគ រកកំហុស និងកែឱ្យស្វ័យប្រវត្តិ
@@ -13,48 +21,39 @@ Desktop AI Chatbot Application សម្រាប់បង្រៀន និង
 
 ---
 
-## 📁 រចនាសម្ព័ន្ធគម្រោង ( Project Structure )
+## 📁 Project Structure
 
 ```
-Demo-AIAssistant/
+Nexus-AI-Assistant/
 ├── FixCode/
-│   └── fix_code_engine.py          # Logic កែកូដ ( regex + AST )
+│   └── fix_code_engine.py        → Logic កែកូដ ( regex + AST )
 ├── LessonCodePython/
-│   ├── lesson_engine.py            # Logic ផ្គូផ្គង keyword → topic
-│   ├── lessons.json                # ខ្លឹមសារមេរៀនទាំង 11
-│   └── theme.py                    # ពណ៌ និង Font កំណត់រួម
+│   ├── lesson_engine.py          → Logic ផ្គូផ្គង keyword → topic
+│   ├── lessons.json              → ខ្លឹមសារមេរៀនទាំង 11
+│   └── theme.py                  → ពណ៌ និង Font កំណត់រួម
 ├── ui/
-│   ├── main_window.py              # បង្អួចមេ
-│   ├── sidebar.py                  # ម៉ឺនុយឆ្វេង
-│   ├── chat_panel.py               # ផ្ទាំង Chat
-│   ├── message_bubble.py           # Bubble សារ
-│   ├── input_bar.py                # ប្រអប់វាយអក្សរ
-│   └── avatars.py                  # រូបតំណាង
-├── main.py                         # ចំណុចចូល ( Entry point )
-└── requirements.txt                # Dependencies
+│   ├── main_window.py            → បង្អួចមេ
+│   ├── sidebar.py                → ម៉ឺនុយឆ្វេង
+│   ├── chat_panel.py             → ផ្ទាំង Chat
+│   ├── message_bubble.py         → Bubble សារ
+│   ├── input_bar.py              → ប្រអប់វាយអក្សរ
+│   └── avatars.py                → រូបតំណាង
+├── main.py                       → ចំណុចចូល ( Entry point )
+├── README.md
+└── requirements.txt              → Dependencies
 ```
 
 ---
 
-## 🚀 ការដំឡើង និងដំណើរការ ( Installation & Run )
+## 🚀 How to Run
 
-### តម្រូវការ ( Requirements )
-- Python 3.9+
-- PyQt5 >= 5.15
-
-### ជំហាន
-
-```bash
-# 1. ដំឡើង dependencies
-pip install -r requirements.txt
-
-# 2. ដំណើរការ App
-python main.py
-```
+1. Clone ឬ download repository នេះ
+2. ដំឡើង dependencies ៖ `pip install -r requirements.txt`
+3. ដំណើរការ App ៖ `python main.py`
 
 ---
 
-## 📚 Lesson Mode : ប្រធានបទដែលមាន ( Topics )
+## 📚 Lesson Mode : Topics
 
 | Key                   | ពិពណ៌នា                                           |
 |-----------------------|---------------------------------------------------|
@@ -76,8 +75,6 @@ python main.py
 
 ## 🛠 Fix Code Mode : អ្វីខ្លះដែលកែបាន
 
-App នឹងស្កេនកូដ Python របស់អ្នក ហើយកែកំហុសទាំងនេះស្វ័យប្រវត្តិ៖
-
 1. **Typo នៃ `print()`** : ដូចជា `printf(`, `Printtf(`, `PrInt(`
 2. **Case ខុស** : `Print()`, `PRINT()` → `print()`
 3. **សញ្ញា `;`** នៅចុងបន្ទាត់ ( មិនចាំបាច់ក្នុង Python )
@@ -97,7 +94,9 @@ App នឹងស្កេនកូដ Python របស់អ្នក ហើយ�
 
 ---
 
-## 📝 ចំណាំ ( Notes )
+## 📝 Notes
 
 - App នេះមិនតម្រូវឱ្យមាន Internet ឬ API Key ទេ ( 100% Local Logic )
 - សម្រាប់គោលបំណងសិក្សា / Demo : មិនមែនជា AI Model ពិតប្រាកដ (LLM) ទេ គឺជា Rule-based system
+- Desktop AI Chatbot Application សម្រាប់បង្រៀន និងកែកូដ Python សាងសង់ដោយ **PyQt5** 
+- App នេះដំណើរការជា **Rule-based AI** ១០០% ក្នុងម៉ាស៊ីន Local និង គ្មានការហៅ API ខាងក្រៅ ឬប្រើ Internet ទេ។
