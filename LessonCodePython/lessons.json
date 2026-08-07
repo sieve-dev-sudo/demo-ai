@@ -33,7 +33,7 @@
   },
 
   "function": {
-    "theory": "⚙️ Function\n\nFunction ជាប្លុកកូដដែលដាក់ឈ្មោះ និងអាចហៅប្រើឡើងវិញបានច្រើនដង ដោយមិនចាំបាច់ សរសេរកូដដូចគ្នាច្រើនកន្លែង៖\n\n• def — keyword សម្រាប់ប្រកាស function ថ្មី (def function_name(parameters):)\n• Parameter — តម្លៃដែលបញ្ជូនចូល function ពេលហៅប្រើ\n• Default Parameter — តម្លៃលំនាំដើម ប្រសិនបើគ្មានការផ្តល់តម្លៃពេលហៅ (def greet(name, greeting=\"Hello\"):)\n• return — ត្រឡប់តម្លៃចេញពី function ទៅអ្នកហៅ។ បើគ្មាន return — function នោះត្រឡប់ None ជានិច្ច ទោះបីខាងក្នុងមាន calculation ក៏ដោយ\n• ការហៅប្រើ — function_name(arguments)",
+    "theory": "⚙️ Function\n\nFunction ជាប្លុកកូដដែលដាក់ឈ្មោះ និងអាចហៅប្រើឡើងវិញបានច្រើនដង ដោយមិនចាំបាច់ សរសេរកូដដូចគ្នាច្រើនកន្លែង៖\n\n• def : keyword សម្រាប់ប្រកាស function ថ្មី (def function_name(parameters):)\n• Parameter : តម្លៃដែលបញ្ជូនចូល function ពេលហៅប្រើ\n• Default Parameter : តម្លៃលំនាំដើម ប្រសិនបើគ្មានការផ្តល់តម្លៃពេលហៅ (def greet(name, greeting=\"Hello\"):)\n• return : ត្រឡប់តម្លៃចេញពី function ទៅអ្នកហៅ។ បើគ្មាន return : function នោះត្រឡប់ None ជានិច្ច ទោះបីខាងក្នុងមាន calculation ក៏ដោយ\n• ការហៅប្រើ : function_name(arguments)",
     "example": "def greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Dara\"))     # Hello, Dara!\n\ndef greet2(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\n\nprint(greet2(\"Dara\"))                 # Hello, Dara!\nprint(greet2(\"Dara\", \"Good morning\")) # Good morning, Dara!\n\ndef add(x, y):\n    return x + y     # ត្រូវមាន return ដើម្បីឲ្យតម្លៃត្រឡប់មកវិញ\n\nresult = add(3, 4)\nprint(result)        # 7"
   },
 
