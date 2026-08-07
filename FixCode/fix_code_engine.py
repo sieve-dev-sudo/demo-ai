@@ -47,17 +47,13 @@ _PRINT_CHARS = list("print")
 def _print_similarity(word: str) -> bool:
     """Return True if word is a plausible typo of 'print'."""
     w = word.lower()
-    # exact match already handled by R1
     if w == "print":
         return False
-    # must not be a known call
     if word in _KNOWN_CALLS or w in _KNOWN_CALLS:
         return False
-    # must contain at least 'p' and 'r' and 'i' (3 of 5)
     matched = sum(1 for c in _PRINT_CHARS if c in w)
     if matched < 3:
         return False
-    # length sanity: 3..12 chars
     if not (3 <= len(w) <= 12):
         return False
     return True
@@ -179,9 +175,6 @@ def _fix_line(line: str, lineno: int):
     return line + "".join(added), issues
 
 
-# ── R4: compute print() output
-
-
 # ── R5: detect missing colons after control flow statements
 def _fix_missing_colons(code: str):
     """Detect if/elif/else/for/while/def/class missing colon and add it."""
@@ -192,10 +185,8 @@ def _fix_missing_colons(code: str):
     for lineno, line in enumerate(lines, 1):
         stripped = line.rstrip()
         lstr = stripped.lstrip()
-        # Check startswith any control keyword (basic heuristic)
         is_control = any(lstr.startswith(kw) for kw in control_keywords)
         if is_control and stripped and not stripped.endswith(":"):
-            # avoid touching commented lines
             if not lstr.startswith("#"):
                 result.append(stripped + ":")
                 kw = next((kw for kw in control_keywords if lstr.startswith(kw)), "statement")
@@ -216,7 +207,6 @@ def _detect_logic_errors(code: str):
     for lineno, line in enumerate(lines, 1):
         stripped = line.lstrip()
         if stripped.startswith("if ") or stripped.startswith("while "):
-            # naive check: single '=' in condition without '==' or '!='
             cond_part = line
             if " = " in cond_part and "==" not in cond_part and "!=" not in cond_part:
                 issues.append((lineno,
@@ -239,14 +229,12 @@ def _detect_indentation_issues(code: str):
             indent_types.add('tabs')
         if leading.startswith(' '):
             indent_types.add('spaces')
-        # record indent length (spaces count, tabs as 8)
         count = leading.count(' ') + leading.count('\t') * 8
         indent_levels.append(count)
     if len(indent_types) > 1:
         issues.append((1,
                        "Mixed tabs and spaces detected : ប្រើ spaces ផ្ទាល់ខ្លួន",
                        "ប្រើ spaces មួយគ្រប់គ្រាន់ (ទូទៅ 4 spaces) និងចៀសវាង tabs"))
-    # check for large jumps in indent levels
     prev = 0
     for idx, lvl in enumerate(indent_levels, 1):
         if lvl - prev > 12:
@@ -438,4 +426,3 @@ class FixCodeEngine:
         if not s or s.lower() in START_TRIGGERS:
             return INSTRUCTIONS
         return _analyze(s)
-    
