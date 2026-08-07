@@ -75,7 +75,7 @@ def _fix_print_typos(code: str):
             word = m.group(1)
             if _print_similarity(word):
                 issues.append((lineno,
-                    f"'{word}(...)' មិនមែន Python function — "
+                    f"'{word}(...)' មិនមែន Python function : "
                     f"ប្រហែលជា typo នៃ print()",
                     f"{word}(  →  print("))
                 return "print("
@@ -117,7 +117,7 @@ def _fix_semicolons(code: str):
         if _SEMI_RE.search(s):
             result.append(_SEMI_RE.sub("", s))
             issues.append((lineno,
-                "';' នៅចុងបន្ទាត់ — Python មិនប្រើ ';' ដើម្បីបញ្ចប់ statement",
+                "';' នៅចុងបន្ទាត់ : Python មិនប្រើ ';' ដើម្បីបញ្ចប់ statement",
                 "លុប ';' ចេញ"))
         else:
             result.append(line)
@@ -236,14 +236,14 @@ def _detect_indentation_issues(code: str):
         indent_levels.append(count)
     if len(indent_types) > 1:
         issues.append((1,
-            "Mixed tabs and spaces detected — ប្រើ spaces ផ្ទាល់ខ្លួន",
+            "Mixed tabs and spaces detected : ប្រើ spaces ផ្ទាល់ខ្លួន",
             "ប្រើ spaces មួយគ្រប់គ្រាន់ (ទូទៅ 4 spaces) និងចៀសវាង tabs"))
     # check for large jumps in indent levels
     prev = 0
     for idx, lvl in enumerate(indent_levels, 1):
         if lvl - prev > 12:
             issues.append((idx,
-                "Indentation jump too large — ប្រហែលមាន indentation មិនត្រឹមត្រូវ",
+                "Indentation jump too large : ប្រហែលមាន indentation មិនត្រឹមត្រូវ",
                 "ពិនិត្យ spacing និង align blocks"))
         prev = lvl
     return issues
@@ -401,7 +401,7 @@ def _analyze(code: str) -> str:
         for idx, (ln, err, fix) in enumerate(issues, 1):
             parts.append(f"  {idx}. Line {ln}: {err}")
             if fix:
-                parts.append(f"     ✏️  កែ: {fix}")
+                parts.append(f"     ⚙️  កែ: {fix}")
 
     parts.append(f"\n✅ Fixed Code:\n```python\n{code}\n```")
 
