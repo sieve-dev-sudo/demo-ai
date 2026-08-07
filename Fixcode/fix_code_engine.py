@@ -17,7 +17,7 @@ import operator
 START_TRIGGERS = ("/start", "/help", "help", "menu")
 
 INSTRUCTIONS = (
-    "🛠 Fix Code Mode (LOCAL) — AI នឹងវិភាគ Python code ហើយ:\n\n"
+    "🛠 Fix Code Mode (LOCAL) : AI នឹងវិភាគ Python code ហើយ:\n\n"
     "  1️⃣  ស្វែងរក Error ទាំងអស់\n"
     "  2️⃣  បង្ហាញ Fixed Code ដែលបានកែពេញលេញ\n"
     "  3️⃣  គណនា Output ដែលនឹងបានបន្ទាប់ពី run\n\n"
