@@ -18,7 +18,7 @@
   },
 
   "conditional": {
-    "theory": "🔀 Conditional (If / Elif / Else)\n\nConditional អនុញ្ញាតឲ្យកម្មវិធីសម្រេចចិត្តធ្វើខុសគ្នាទៅតាមលក្ខខណ្ឌ៖\n\n• if — ប្រតិបត្តិតែប្លុកខាងក្នុង ប្រសិនបើ condition ជា True\n• elif — ពិនិត្យ condition បន្ថែម ប្រសិនបើ if ខាងលើជា False\n• else — ប្រតិបត្តិប្រសិនបើគ្មាន condition ណាមួយខាងលើជា True\n\nCondition អាចផ្សំជាមួយ and / or / not (Logical operators) និងអាច Nest (if ខាងក្នុង if) បាន។ ត្រូវចូលបន្ទាត់ (indent) ខាងក្នុង block ជានិច្ច ហើយត្រូវមាន ':' នៅចុងជួរ if/elif/else។",
+    "theory": "🔀 Conditional (If / Elif / Else)\n\nConditional អនុញ្ញាតឲ្យកម្មវិធីសម្រេចចិត្តធ្វើខុសគ្នាទៅតាមលក្ខខណ្ឌ៖\n\n• if : ប្រតិបត្តិតែប្លុកខាងក្នុង ប្រសិនបើ condition ជា True\n• elif : ពិនិត្យ condition បន្ថែម ប្រសិនបើ if ខាងលើជា False\n• else : ប្រតិបត្តិប្រសិនបើគ្មាន condition ណាមួយខាងលើជា True\n\nCondition អាចផ្សំជាមួយ and / or / not (Logical operators) និងអាច Nest (if ខាងក្នុង if) បាន។ ត្រូវចូលបន្ទាត់ (indent) ខាងក្នុង block ជានិច្ច ហើយត្រូវមាន ':' នៅចុងជួរ if/elif/else។",
     "example": "age = 18\n\nif age >= 18:\n    print(\"Adult\")\nelif age >= 13:\n    print(\"Teenager\")\nelse:\n    print(\"Child\")\n\nscore = 85\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\"\nelse:\n    grade = \"C\"\nprint(f\"Grade: {grade}\")   # Grade: B\n\nusername = \"admin\"\npassword = \"1234\"\nif username == \"admin\" and password == \"1234\":\n    print(\"Login success!\")"
   },
 
