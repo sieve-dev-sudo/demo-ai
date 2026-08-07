@@ -23,7 +23,7 @@
   },
 
   "loop": {
-    "theory": "🔁 Loop (For / While)\n\nLoop ប្រើសម្រាប់ធ្វើកិច្ចការដដែលៗដោយមិនចាំបាច់សរសេរកូដច្រើនដង៖\n\n• for — loop តាមចំនួនដឹងច្បាស់ (ឧ. តាមធាតុក្នុង list, ឬ range())\n• while — loop ដែលដំណើរការនៅពេល condition នៅតែ True (ត្រូវប្រយ័ត្នកែប្រែ variable ខាងក្នុង body ដើម្បីកុំឲ្យ infinite loop)\n• range(start, stop, step) — បង្កើតលំដាប់លេខសម្រាប់ for loop\n• break — បញ្ឈប់ loop ភ្លាមៗ\n• continue — រំលងទៅ iteration បន្ទាប់ភ្លាមៗ\n\n⚠️ កំហុសញឹកញាប់៖ for loop with off-by-one (ប្រើ <= ជំនួស < ពេលប្រៀបធៀបជាមួយ len()) អាចបង្ក IndexError។",
+    "theory": "🔁 Loop (For / While)\n\nLoop ប្រើសម្រាប់ធ្វើកិច្ចការដដែលៗដោយមិនចាំបាច់សរសេរកូដច្រើនដង៖\n\n• for loop : loop តាមចំនួនដឹងច្បាស់ (ឧ. តាមធាតុក្នុង list, ឬ range())\n• while loop : loop ដែលដំណើរការនៅពេល condition នៅតែ True (ត្រូវប្រយ័ត្នកែប្រែ variable ខាងក្នុង body ដើម្បីកុំឲ្យ infinite loop)\n• range(start, stop, step) : បង្កើតលំដាប់លេខសម្រាប់ for loop\n• break : បញ្ឈប់ loop ភ្លាមៗ\n• continue : រំលងទៅ iteration បន្ទាប់ភ្លាមៗ\n\n⚠️ កំហុសញឹកញាប់៖ for loop with off-by-one (ប្រើ <= ជំនួស < ពេលប្រៀបធៀបជាមួយ len()) អាចបង្ក IndexError។",
     "example": "fruits = [\"apple\", \"banana\", \"cherry\"]\nfor fruit in fruits:\n    print(fruit)\n\nfor i in range(5):          # 0,1,2,3,4\n    print(i)\n\ncount = 0\nwhile count < 5:\n    print(f\"Count: {count}\")\n    count += 1              # ត្រូវកែប្រែ count គ្រប់ដង កុំឲ្យ infinite loop\n\nfor num in range(10):\n    if num == 5:\n        break                # ឈប់ពេលដល់ 5\n    if num % 2 != 0:\n        continue             # រំលងលេខសេស\n    print(num)"
   },
 
