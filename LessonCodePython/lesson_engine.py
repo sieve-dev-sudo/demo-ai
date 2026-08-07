@@ -11,35 +11,35 @@ LESSONS_PATH = Path(__file__).resolve().parent / "lessons.json"
 # Each entry: (tuple_of_keywords, topic_key)
 TOPIC_KEYWORDS = [
     # ── specific first ──────────────────────────────────────────────
-    (("data structure","tuple","set","dictionary","dict","key value",
-      "hashmap","data_structure"),                       "data_structures"),
-    (("*args","**kwargs","kwargs","lambda","higher order",
-      "map(","filter(","advanced function","default param",
-      "functions_advanced","function advanced"),         "functions_advanced"),
-    (("file handling","file_handling","open(","readline","readlines",
-      "writelines","encoding","file mode","read file","write file",
-      "append file","csv","txt file"),                   "file_handling"),
-    (("oop","class","object","inherit","__init__","self.",
-      "polymor","encapsul","instance of","override",
-      "magic method","__str__","super()"),               "oop"),
+    (("data structure", "tuple", "set", "dictionary", "dict", "key value",
+      "hashmap", "data_structure"), "data_structures"),
+    (("*args", "**kwargs", "kwargs", "lambda", "higher order",
+      "map(", "filter(", "advanced function", "default param",
+      "functions_advanced", "function advanced"), "functions_advanced"),
+    (("file handling", "file_handling", "open(", "readline", "readlines",
+      "writelines", "encoding", "file mode", "read file", "write file",
+      "append file", "csv", "txt file"), "file_handling"),
+    (("oop", "class", "object", "inherit", "__init__", "self.",
+      "polymor", "encapsul", "instance of", "override",
+      "magic method", "__str__", "super()"), "oop"),
     # ── generic topics after ────────────────────────────────────────
-    (("basic","comment","indentation","hello world","syntax",
-      "python basic","first program"),                   "basic"),
-    (("variable","data type","int(","float(","bool","none",
-      "type conversion","ប្រភេទ","var ","assign"),        "variables"),
-    (("operator","arithmetic","math","calculation","modulo",
-      "floor div","bitwise","operator"),                 "operators"),
-    (("if ","else:","elif","condition","conditional",
-      "ternary","លក្ខខណ្ឌ"),                              "conditional"),
-    (("for ","while ","iterate","range(",
-      "break","continue","repeat"),                      "loop"),
-    (("array","list","append","pop(","sort(","index","slice",
-      "បញ្ជី","remove(","insert("),                       "array"),
-    (("function","def ","return","parameter","argument",
-      "អនុគមន៍","func"),                                  "function"),
+    (("basic", "comment", "indentation", "hello world", "syntax",
+      "python basic", "first program"), "basic"),
+    (("variable", "data type", "int(", "float(", "bool", "none",
+      "type conversion", "ប្រភេទ", "var ", "assign"), "variables"),
+    (("operator", "arithmetic", "math", "calculation", "modulo",
+      "floor div", "bitwise", "operator"), "operators"),
+    (("if ", "else:", "elif", "condition", "conditional",
+      "ternary", "លក្ខខណ្ឌ"), "conditional"),
+    (("for ", "while ", "iterate", "range(",
+      "break", "continue", "repeat"), "loop"),
+    (("array", "list", "append", "pop(", "sort(", "index", "slice",
+      "បញ្ជី", "remove(", "insert("), "array"),
+    (("function", "def ", "return", "parameter", "argument",
+      "អនុគមន៍", "func"), "function"),
 ]
 
-START_TRIGGERS = ("/start","/help","help","menu","start","មុខងារ")
+START_TRIGGERS = ("/start", "/help", "help", "menu", "start", "មុខងារ")
 
 
 class LessonEngine:
@@ -68,16 +68,16 @@ class LessonEngine:
     @staticmethod
     def _render(entry) -> str:
         if isinstance(entry, dict):
-            theory  = entry.get("theory",  "")
+            theory = entry.get("theory", "")
             example = entry.get("example", "")
             return f"{theory}\n\n📝 ឧទាហរណ៍ (Example):\n\n```python\n{example}\n```"
         return entry
 
     def _fallback(self, user_input: str) -> str:
-        topics  = [k for k in self.lessons if k != "/start"]
+        topics = [k for k in self.lessons if k != "/start"]
         listing = "\n".join(f"  • {t}" for t in topics)
         return (
-            f'🤔 ខ្ញុំមិនយល់ពី: "{user_input[:60]}"\n\n'
+            f'🤔 ខ្ញុំមិនយល់អំពីអ្វីដែលអ្នកសរសេរ: "{user_input[:60]}"\n\n'
             f"💡 Topics ({len(topics)}):\n\n{listing}\n\n"
             f"👉 វាយ /start ដើម្បីមើល menu ពេញ"
         )
