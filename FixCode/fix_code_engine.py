@@ -438,3 +438,4 @@ class FixCodeEngine:
         if not s or s.lower() in START_TRIGGERS:
             return INSTRUCTIONS
         return _analyze(s)
+    
